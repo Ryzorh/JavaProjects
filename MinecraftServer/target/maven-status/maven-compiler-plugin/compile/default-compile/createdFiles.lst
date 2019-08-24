@@ -1,0 +1,9 @@
+com/eduard/commands/SetPerms.class
+com/eduard/commands/Whisper.class
+com/eduard/commands/Town.class
+com/eduard/commands/LastSeen.class
+com/eduard/commands/Balance.class
+com/eduard/minecraftserver/PluginTest.class
+com/eduard/minecraftserver/DataBase.class
+com/eduard/minecraftserver/ListenerTest.class
+com/eduard/commands/Register.class

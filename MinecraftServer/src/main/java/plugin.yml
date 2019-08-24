@@ -1,0 +1,31 @@
+## YAML Template.
+---
+name: PluginTest
+version: 1.0
+main: com.eduard.minecraftserver.PluginTest
+commands:
+    register:
+        description: Sign up command.
+        usage: To sign up type /register your_new_user_name. Your user name must contain more than 2 characters. And it can only contain word characters and numbers.
+    bal:
+        description: Show balance command.
+        usage: This command doesn't need any argument.
+    last_seen:
+        description: Show when the player was last seen.
+        usage: To show last time the player was seen type /last_seen player_name. The player_name can only contain word characters and numbers.
+    w:
+        description: Whisper something to player.
+        usage: /w player message
+    perm:
+        description: Set permission.
+        usage: /perm permission_group user
+    town:
+        description: Manage your town.
+        usage: /town option arguments
+permissions:
+    plugintest.perm: 
+        description: Grants permission for executing a permissions management command.
+        default: op
+    plugintest.town: 
+        description: Grants permission for executing a town management command.
+        default: false
