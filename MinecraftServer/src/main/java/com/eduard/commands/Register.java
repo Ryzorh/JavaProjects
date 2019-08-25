@@ -49,7 +49,7 @@ public class Register implements CommandExecutor, TabCompleter{
                 PreparedStatement preparedStatement;
                 String SQL_STMNT;
                 
-                SQL_STMNT="INSERT INTO users_data (mcuser, user, wealth, `group`, last_seen, register_date) VALUES ('"+cs.getName()+"','"+args[0]+"', 0, 'Newcomer', STR_TO_DATE('"+dateFormat.format(cal.getTime())+"','%Y/%m/%d %H:%i:%s'), STR_TO_DATE('"+dateFormat.format(cal.getTime())+"','%Y/%m/%d %H:%i:%s'))";
+                SQL_STMNT="INSERT INTO users_data (mcuser, user, wealth, `group`, last_seen, register_date, pay_date) VALUES ('"+cs.getName()+"','"+args[0]+"', 0, 'Newcomer', STR_TO_DATE('"+dateFormat.format(cal.getTime())+"','%Y/%m/%d %H:%i:%s'),STR_TO_DATE('"+dateFormat.format(cal.getTime())+"','%Y/%m/%d %H:%i:%s'), STR_TO_DATE('"+dateFormat.format(cal.getTime())+"','%Y/%m/%d %H:%i:%s'))";
                 preparedStatement = conn.prepareStatement(SQL_STMNT);
                 preparedStatement.executeUpdate();
                 preparedStatement.close();

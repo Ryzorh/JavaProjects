@@ -77,6 +77,7 @@ public class SetPerms implements CommandExecutor, TabCompleter{
                     String user = result.getString("user");
                     Player player= Bukkit.getPlayer(mcuser);
                     if(player==null) return false;
+                    if(!player.isOnline()) return false;
                     addGroupPermissions(args[0],player);
                     DataBase.executeUpdate("update users_data set `group`= '"+args[0]+"' where user='"+user+"'");
                     player.sendMessage(args[0]+" permissions have been given to you.");
@@ -101,13 +102,15 @@ public class SetPerms implements CommandExecutor, TabCompleter{
             rList.add("Member");
             rList.add("Admin");
         }else if(args.length==2){
-            String SQL_QUERY = "select user from users_trns where mcuser <> '" + cs.getName() + "'";
+            String SQL_QUERY = "select * from users_trns where mcuser <> '" + cs.getName() + "'";
             try (Connection conn = DriverManager.getConnection(connection[0] + connection[1] + connection[2], connection[3], connection[4]);
                     PreparedStatement preparedStatement = conn.prepareStatement(SQL_QUERY);) {
                 ResultSet result = preparedStatement.executeQuery();
                 if (result.next()) {
                     String user = result.getString("user");
-                    rList.add(user);
+                    String mcuser = result.getString("mcuser");
+                    Player player= Bukkit.getPlayer(mcuser);
+                    if(player!=null) if(player.isOnline()) rList.add(user);
                 }
                 preparedStatement.close();
                 conn.close();

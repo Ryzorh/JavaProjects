@@ -15,10 +15,10 @@ commands:
         usage: To show last time the player was seen type /last_seen player_name. The player_name can only contain word characters and numbers.
     w:
         description: Whisper something to player.
-        usage: /w player message
+        usage: /w player message. Player must be online.
     perm:
         description: Set permission.
-        usage: /perm permission_group user
+        usage: /perm permission_group user. Player must be online.
     town:
         description: Manage your town.
         usage: /town option arguments

@@ -8,12 +8,17 @@ package com.eduard.commands;
 import com.eduard.minecraftserver.DataBase;
 import com.eduard.minecraftserver.ListenerTest;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bukkit.command.Command;
@@ -24,10 +29,12 @@ import org.bukkit.command.CommandSender;
  *
  * @author eduard
  */
-public class Town implements CommandExecutor{
+public class Town implements CommandExecutor, Runnable{
     String[] connection;
+    double chunkProtectionCost;
     public Town (String[] connection){
         this.connection=connection;
+        this.chunkProtectionCost=5.0;
     }
     private boolean occupiedChunk(int x, int z) {
         String SQL_QUERY = "select * from chunks_town where x=" + x + " and z=" + z;
@@ -241,5 +248,35 @@ public class Town implements CommandExecutor{
             }
         }
         return success;
+    }
+
+    @Override
+    public void run() {
+        while(true){
+            try {
+                DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+                Calendar cal = Calendar.getInstance();
+                DataBase.executeUpdate(""
+                        + "update users_data u inner join towns t on (u.town=t.town_name) "
+                        + "set u.wealth="
+                            + "if(date(u.pay_date)<>date(STR_TO_DATE('"+dateFormat.format(cal.getTime())+"','%Y/%m/%d %H:%i:%s')), "
+                                + "if(u.user=t.mayor, u.wealth-(select count(*)*"+chunkProtectionCost+" from chunks_town c2 where u.town=c2.town_name), u.wealth-t.rent*(select count(*) from chunks_town c2 where u.user=c2.owner)), "
+                                + "u.wealth"
+                            + "), "
+                        + "u.pay_date="
+                            + "if(date(u.pay_date)<>date(STR_TO_DATE('"+dateFormat.format(cal.getTime())+"','%Y/%m/%d %H:%i:%s')), "
+                                + "STR_TO_DATE('"+dateFormat.format(cal.getTime())+"','%Y/%m/%d %H:%i:%s'), u.pay_date"
+                            + ") "
+                );
+                DataBase.executeUpdate(""
+                        + "update users_data u inner join chunks_town c on u.user=c.owner "
+                        + "set c.seized=if(u.wealth<0, 1, 0)");
+                //Thread.sleep(3600000);
+                Thread.sleep(1000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Town.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 }

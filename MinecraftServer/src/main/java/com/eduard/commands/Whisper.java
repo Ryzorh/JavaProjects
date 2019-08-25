@@ -49,7 +49,8 @@ public class Whisper implements CommandExecutor, TabCompleter{
                 if (result.next()) {
                     String mcuser=result.getString("mcuser");
                     Player player=Bukkit.getPlayer(mcuser);
-                    if(player==null)return false;
+                    if(player==null) return false;
+                    if(!player.isOnline()) return false;
                     cs.sendMessage(cs.getName()+" whispers to "+args[0]+": "+message);
                     player.sendMessage(cs.getName()+" whispers to "+args[0]+": "+message);
                 }else{
@@ -69,13 +70,15 @@ public class Whisper implements CommandExecutor, TabCompleter{
     public List<String> onTabComplete(CommandSender cs, Command cmnd, String string, String[] args) {
         List<String> rList = new ArrayList<>();
         if(args.length==1){
-            String SQL_QUERY = "select user from users_trns where mcuser <> '" + cs.getName() + "'";
+            String SQL_QUERY = "select * from users_trns where mcuser <> '" + cs.getName() + "'";
             try (Connection conn = DriverManager.getConnection(connection[0] + connection[1] + connection[2], connection[3], connection[4]);
                     PreparedStatement preparedStatement = conn.prepareStatement(SQL_QUERY);) {
                 ResultSet result = preparedStatement.executeQuery();
                 if (result.next()) {
                     String user = result.getString("user");
-                    rList.add(user);
+                    String mcuser = result.getString("mcuser");
+                    Player player= Bukkit.getPlayer(mcuser);
+                    if(player!=null) if(player.isOnline()) rList.add(user);
                 }
                 preparedStatement.close();
                 conn.close();
