@@ -59,11 +59,11 @@ public class Main extends JPanel implements Runnable{
             }
         }
         Random rnd = new Random(48472);
-        int start =(int)Math.floor(rnd.nextDouble()*lado*4);
-        result[start/lado<2?start%lado:start/lado==2?lado-1:0][start/lado>1?start%lado:start/lado==1?lado-1:0][start/lado<2?0:1]=false;
-        int[] point={start/lado<2?start%lado:start/lado==2?lado-1:0,start/lado>1?start%lado:start/lado==1?lado-1:0};
-        point[0]=point[0]>lado -2? lado-2:point[0];
-        point[1]=point[1]>lado -2? lado-2:point[1];
+        int start =(int)Math.floor(rnd.nextDouble()*(lado-1)*4);
+        result[start/(lado-1)<2?start%(lado-1):start/(lado-1)==2?(lado-1):0][start/(lado-1)>1?start%(lado-1):start/(lado-1)==1?lado-1:0][start/(lado-1)<2?0:1]=false;
+        int[] point={start/(lado-1)<2?start%(lado-1):start/(lado-1)==2?(lado-2):0,start/(lado-1)>1?start%(lado-1):start/(lado-1)==1?lado-2:0};
+        //point[0]=point[0]>lado -2? lado-2:point[0];
+        //point[1]=point[1]>lado -2? lado-2:point[1];
         visited.add(new Coords(point[0],point[1]));
         path.add(point);
         int[][] dir={{0,1},{1,0},{0,-1},{-1,0}};
@@ -103,11 +103,6 @@ public class Main extends JPanel implements Runnable{
             label.setIcon(new ImageIcon(buildMaze(result)));
             point=newPos;
         }
-        /*
-        int end = (int) Math.floor(rnd.nextDouble() * lado * 4);
-        result[end / lado < 2 ? end % lado : end / lado == 2 ? lado - 1 : 0][end / lado > 1 ? end % lado : end / lado == 1 ? lado - 1 : 0][end / lado < 2 ? 0 : 1] = false;
-        label.setIcon(new ImageIcon(buildMaze(result)));
-        */
         return result;
     }
     private void save(boolean[][][] maze){

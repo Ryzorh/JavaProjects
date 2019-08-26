@@ -471,6 +471,10 @@ public class Town implements CommandExecutor, Runnable{
                         cs.sendMessage("You have not got any invitation.");
                     }
                     break;
+                case "claim": 
+                    break;
+                case "abandon": 
+                    break;
             }
         }
         return success;
