@@ -60,7 +60,7 @@ public class LastSeen implements CommandExecutor, TabCompleter{
     public List<String> onTabComplete(CommandSender cs, Command cmnd, String string, String[] args) {
         List<String> rList = new ArrayList<>();
         if(args.length==1){
-            String SQL_QUERY = "select user from users_trns where mcuser <> '" + cs.getName() + "'";
+            String SQL_QUERY = "select user from users_data where mcuser <> '" + cs.getName() + "'";
             try (Connection conn = DriverManager.getConnection(connection[0] + connection[1] + connection[2], connection[3], connection[4]);
                     PreparedStatement preparedStatement = conn.prepareStatement(SQL_QUERY);) {
                 ResultSet result = preparedStatement.executeQuery();

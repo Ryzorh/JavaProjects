@@ -48,7 +48,7 @@ public class ListenerTest implements Listener{
         String SQL_QUERY;
         PreparedStatement preparedStatement;
         try (Connection conn = DriverManager.getConnection(connection[0]+connection[1]+connection[2], connection[3], connection[4])){
-            SQL_QUERY = "select * from users_data where user=(select user from users_trns where mcuser='" + player.getName() + "')";
+            SQL_QUERY = "select * from users_data where mcuser='" + player.getName() + "'";
             preparedStatement = conn.prepareStatement(SQL_QUERY);
             ResultSet result = preparedStatement.executeQuery();
             if (result.next()) {
@@ -86,7 +86,7 @@ public class ListenerTest implements Listener{
     public void onPlayerJoin(PlayerJoinEvent event){
         perms.addPlayerAttachment(event.getPlayer());
         String SQL_QUERY;
-        SQL_QUERY = "select * from users_data where user=(select user from users_trns where mcuser='" + event.getPlayer().getName() + "')";
+        SQL_QUERY = "select * from users_data where mcuser='" + event.getPlayer().getName() + "'";
         try (   Connection conn = DriverManager.getConnection(connection[0]+connection[1]+connection[2], connection[3], connection[4]);
                 PreparedStatement preparedStatement = conn.prepareStatement(SQL_QUERY);){
             ResultSet result = preparedStatement.executeQuery();
@@ -121,7 +121,7 @@ public class ListenerTest implements Listener{
     }
     @EventHandler
     public void onBuild(BlockCanBuildEvent event){
-        String SQL_QUERY= "select * from users_data where user=(select user from users_trns where mcuser='" + event.getPlayer().getName() + "')";
+        String SQL_QUERY= "select * from users_data where mcuser='" + event.getPlayer().getName() + "'";
         try (   Connection conn = DriverManager.getConnection(connection[0]+connection[1]+connection[2], connection[3], connection[4]);
                 PreparedStatement preparedStatement = conn.prepareStatement(SQL_QUERY);
             ){
@@ -140,7 +140,7 @@ public class ListenerTest implements Listener{
     }
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event){
-        String SQL_QUERY = "select * from users_data where user=(select user from users_trns where mcuser='" + event.getPlayer().getName() + "')";
+        String SQL_QUERY = "select * from users_data where mcuser='" + event.getPlayer().getName() + "'";
         try (   Connection conn = DriverManager.getConnection(connection[0]+connection[1]+connection[2], connection[3], connection[4]);
                 PreparedStatement preparedStatement = conn.prepareStatement(SQL_QUERY);
             ){
@@ -169,7 +169,7 @@ public class ListenerTest implements Listener{
         if(event.getDamager() instanceof Player && event.getEntity() instanceof Player){
             Player attacker=(Player) event.getDamager();
             Player defender=(Player) event.getEntity();
-            String SQL_QUERY = "select * from users_data ud join towns t on (ud.town=t.town_name) where user in (select user from users_trns where mcuser in ('" + attacker + "', '" + defender + "'))";
+            String SQL_QUERY = "select * from users_data ud join towns t on (ud.town=t.town_name) where mcuser in ('" + attacker.getName() + "', '" + defender.getName() + "')";
             try (Connection conn = DriverManager.getConnection(connection[0]+connection[1]+connection[2], connection[3], connection[4]);
                     PreparedStatement preparedStatement = conn.prepareStatement(SQL_QUERY);) {
                 ResultSet result = preparedStatement.executeQuery();
@@ -192,7 +192,7 @@ public class ListenerTest implements Listener{
     }
     @EventHandler
     public void onSendMessage(AsyncPlayerChatEvent event){
-        String SQL_QUERY = "select * from users_data where user=(select user from users_trns where mcuser='" + event.getPlayer().getName() + "')";
+        String SQL_QUERY = "select * from users_data where mcuser='" + event.getPlayer().getName() + "'";
         try (   Connection conn = DriverManager.getConnection(connection[0]+connection[1]+connection[2], connection[3], connection[4]);
                 PreparedStatement preparedStatement = conn.prepareStatement(SQL_QUERY);
             ){

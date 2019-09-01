@@ -41,7 +41,23 @@ public class Whisper implements CommandExecutor, TabCompleter{
             message+=args[i]+" ";
         }
         if(validArgs){
-            String SQL_QUERY = "select * from users_data where user='" + args[0] + "'";
+            String SQL_QUERY = "select * from users_data where mcuser='" + cs.getName() + "'";
+            String sender="";
+            try (Connection conn = DriverManager.getConnection(connection[0]+connection[1]+connection[2], connection[3], connection[4]);
+                PreparedStatement preparedStatement = conn.prepareStatement(SQL_QUERY);
+                ) {
+                ResultSet result = preparedStatement.executeQuery();
+                if (result.next()) {
+                    sender=result.getString("user");
+                }else{
+                    cs.sendMessage("Player "+args[0]+" was not found.");
+                }
+                preparedStatement.close();
+                conn.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(Balance.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            SQL_QUERY = "select * from users_data where user='" + args[0] + "'";
             try (Connection conn = DriverManager.getConnection(connection[0]+connection[1]+connection[2], connection[3], connection[4]);
                 PreparedStatement preparedStatement = conn.prepareStatement(SQL_QUERY);
                 ) {
@@ -70,7 +86,7 @@ public class Whisper implements CommandExecutor, TabCompleter{
     public List<String> onTabComplete(CommandSender cs, Command cmnd, String string, String[] args) {
         List<String> rList = new ArrayList<>();
         if(args.length==1){
-            String SQL_QUERY = "select * from users_trns where mcuser <> '" + cs.getName() + "'";
+            String SQL_QUERY = "select * from users_data where mcuser <> '" + cs.getName() + "'";
             try (Connection conn = DriverManager.getConnection(connection[0] + connection[1] + connection[2], connection[3], connection[4]);
                     PreparedStatement preparedStatement = conn.prepareStatement(SQL_QUERY);) {
                 ResultSet result = preparedStatement.executeQuery();

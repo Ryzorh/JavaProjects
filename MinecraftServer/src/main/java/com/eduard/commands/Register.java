@@ -53,12 +53,7 @@ public class Register implements CommandExecutor, TabCompleter{
                 preparedStatement = conn.prepareStatement(SQL_STMNT);
                 preparedStatement.executeUpdate();
                 preparedStatement.close();
-                
-                SQL_STMNT="INSERT INTO users_trns (mcuser, user) VALUES ('"+cs.getName()+"','"+args[0]+"')";
-                preparedStatement = conn.prepareStatement(SQL_STMNT);
-                preparedStatement.executeUpdate();
-                preparedStatement.close();
-                
+                                
                 conn.commit();
                 
                 cs.sendMessage("You have been registered successfully.");

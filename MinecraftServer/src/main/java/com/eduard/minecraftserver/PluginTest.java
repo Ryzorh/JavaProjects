@@ -23,10 +23,9 @@ public class PluginTest extends JavaPlugin {
         String[] connection={"jdbc:mysql://localhost:3306","/Minecraft","?useSSL=false&serverTimezone=UTC", "root", "xx8VQhJl"};
         DataBase.connection=connection;
         DataBase.createDB();
-        DataBase.executeUpdate("CREATE TABLE IF NOT EXISTS users_data (mcuser varchar(255) not null, user varchar(255) not null, `group` varchar(255) not null, wealth decimal (65,2) not null, town varchar(255), last_seen datetime not null, register_date datetime not null, pay_date datetime not null,PRIMARY KEY(user))");
-        DataBase.executeUpdate("CREATE TABLE IF NOT EXISTS users_trns (mcuser varchar(255) not null, user varchar(255) not null, PRIMARY KEY(mcuser))");
+        DataBase.executeUpdate("CREATE TABLE IF NOT EXISTS users_data (mcuser varchar(255) not null unique, user varchar(255) not null, `group` varchar(255) not null, wealth decimal (65,2) not null, town varchar(255), last_seen datetime not null, register_date datetime not null, pay_date datetime not null,CONSTRAINT users_data_pk PRIMARY KEY(user) )");
         DataBase.executeUpdate("CREATE TABLE IF NOT EXISTS chunks_town (x INT not null, z INT not null, town_name varchar(255) not null, owner varchar(255) not null, seized tinyint(1) not null, PRIMARY KEY(x,z))");
-        DataBase.executeUpdate("CREATE TABLE IF NOT EXISTS towns (mayor varchar(255) not null, town_name varchar(255) not null, seized_days int not null, pvp tinyint(1) not null, public tinyint(1) not null, rent decimal (65,2) not null, tax decimal (65,2) not null, PRIMARY KEY(town_name))");
+        DataBase.executeUpdate("CREATE TABLE IF NOT EXISTS towns (mayor varchar(255) not null unique, town_name varchar(255) not null, seized_days int not null, pvp tinyint(1) not null, public tinyint(1) not null, rent decimal (65,2) not null, tax decimal (65,2) not null, PRIMARY KEY(town_name))");
         SetPerms perms=new SetPerms(this, connection);
         Register register = new Register(connection);
         Balance balance=new Balance(connection);

@@ -84,7 +84,7 @@ public class Town implements CommandExecutor, Runnable{
     }
     private boolean newTown(CommandSender cs, String townName){
         boolean successfull=false;
-        String SQL_QUERY= "select * from users_data where user=(select user from users_trns where mcuser='"+cs.getName()+"')";
+        String SQL_QUERY= "select * from users_data where mcuser='"+cs.getName()+"'";
         try (   Connection conn = DriverManager.getConnection(connection[0]+connection[1]+connection[2], connection[3], connection[4]);
                 PreparedStatement preparedStatement = conn.prepareStatement(SQL_QUERY);){
             ResultSet result = preparedStatement.executeQuery();
@@ -119,7 +119,7 @@ public class Town implements CommandExecutor, Runnable{
     }
     private boolean joinTown(CommandSender cs, String townName){
         boolean successfull=false;
-        String SQL_QUERY= "select * from users_data where user=(select user from users_trns where mcuser='"+cs.getName()+"')";
+        String SQL_QUERY= "select * from users_data where mcuser='"+cs.getName()+"'";
         try (  Connection conn = DriverManager.getConnection(connection[0]+connection[1]+connection[2], connection[3], connection[4]);
                 PreparedStatement preparedStatement = conn.prepareStatement(SQL_QUERY);){
             ResultSet result = preparedStatement.executeQuery();
@@ -160,7 +160,7 @@ public class Town implements CommandExecutor, Runnable{
     }
     private boolean leaveTown(CommandSender cs){
         boolean successfull=false;
-        String SQL_QUERY= "select * from users_data where user=(select user from users_trns where mcuser='"+cs.getName()+"')";
+        String SQL_QUERY= "select * from users_data where mcuser='"+cs.getName()+"'";
         try (   Connection conn = DriverManager.getConnection(connection[0]+connection[1]+connection[2], connection[3], connection[4]);
                 PreparedStatement preparedStatement = conn.prepareStatement(SQL_QUERY);){
             ResultSet result = preparedStatement.executeQuery();
@@ -189,7 +189,7 @@ public class Town implements CommandExecutor, Runnable{
     }
     private boolean setPVP(CommandSender cs){
         boolean successfull=false;
-        String SQL_QUERY= "select * from users_data ud join towns t on (ud.town=t.town_name) where user=(select user from users_trns where mcuser='"+cs.getName()+"')";
+        String SQL_QUERY= "select * from users_data ud join towns t on (ud.town=t.town_name) where mcuser='"+cs.getName()+"'";
         try (   Connection conn = DriverManager.getConnection(connection[0]+connection[1]+connection[2], connection[3], connection[4]);
                 PreparedStatement preparedStatement = conn.prepareStatement(SQL_QUERY);){
             ResultSet result = preparedStatement.executeQuery();
@@ -214,7 +214,7 @@ public class Town implements CommandExecutor, Runnable{
     }
     private boolean setPublic(CommandSender cs){
         boolean successfull=false;
-        String SQL_QUERY= "select * from users_data ud join towns t on (ud.town=t.town_name) where user=(select user from users_trns where mcuser='"+cs.getName()+"')";
+        String SQL_QUERY= "select * from users_data ud join towns t on (ud.town=t.town_name) where  mcuser='"+cs.getName()+"'";
         try (   Connection conn = DriverManager.getConnection(connection[0]+connection[1]+connection[2], connection[3], connection[4]);
                 PreparedStatement preparedStatement = conn.prepareStatement(SQL_QUERY);){
             ResultSet result = preparedStatement.executeQuery();
@@ -239,7 +239,7 @@ public class Town implements CommandExecutor, Runnable{
     }
     private boolean setRent(CommandSender cs, BigDecimal rent){
         boolean successfull=false;
-        String SQL_QUERY= "select * from users_data ud join towns t on (ud.town=t.town_name) where user=(select user from users_trns where mcuser='"+cs.getName()+"')";
+        String SQL_QUERY= "select * from users_data ud join towns t on (ud.town=t.town_name) where mcuser='"+cs.getName()+"'";
         try (   Connection conn = DriverManager.getConnection(connection[0]+connection[1]+connection[2], connection[3], connection[4]);
                 PreparedStatement preparedStatement = conn.prepareStatement(SQL_QUERY);){
             ResultSet result = preparedStatement.executeQuery();
@@ -263,7 +263,7 @@ public class Town implements CommandExecutor, Runnable{
     }
     private boolean setTax(CommandSender cs, BigDecimal tax){
         boolean successfull=false;
-        String SQL_QUERY= "select * from users_data ud join towns t on (ud.town=t.town_name) where user=(select user from users_trns where mcuser='"+cs.getName()+"')";
+        String SQL_QUERY= "select * from users_data ud join towns t on (ud.town=t.town_name) where mcuser='"+cs.getName()+"'";
         try (   Connection conn = DriverManager.getConnection(connection[0]+connection[1]+connection[2], connection[3], connection[4]);
                 PreparedStatement preparedStatement = conn.prepareStatement(SQL_QUERY);){
             ResultSet result = preparedStatement.executeQuery();
@@ -287,7 +287,7 @@ public class Town implements CommandExecutor, Runnable{
     }
     private boolean setSeizedDays(CommandSender cs, int seizedDays){
         boolean successfull=false;
-        String SQL_QUERY= "select * from users_data ud join towns t on (ud.town=t.town_name) where user=(select user from users_trns where mcuser='"+cs.getName()+"')";
+        String SQL_QUERY= "select * from users_data ud join towns t on (ud.town=t.town_name) where mcuser='"+cs.getName()+"'";
         try (   Connection conn = DriverManager.getConnection(connection[0]+connection[1]+connection[2], connection[3], connection[4]);
                 PreparedStatement preparedStatement = conn.prepareStatement(SQL_QUERY);){
             ResultSet result = preparedStatement.executeQuery();
@@ -372,7 +372,7 @@ public class Town implements CommandExecutor, Runnable{
     }
     private boolean invite(CommandSender cs, String user){
         boolean successfull=false;
-        String SQL_QUERY = "select * from users_data ud join towns t on (ud.town=t.town_name) where user=(select user from users_trns where mcuser='"+cs.getName()+"') and t.mayor=ud.user";
+        String SQL_QUERY = "select * from users_data ud join towns t on (ud.town=t.town_name) where mcuser='"+cs.getName()+"' and t.mayor=ud.user";
         try (Connection conn = DriverManager.getConnection(connection[0] + connection[1] + connection[2], connection[3], connection[4]);
                 PreparedStatement preparedStatement = conn.prepareStatement(SQL_QUERY);) {
             ResultSet result = preparedStatement.executeQuery();
@@ -464,7 +464,7 @@ public class Town implements CommandExecutor, Runnable{
                 case "accept": 
                     String town = invitation.get(cs.getName());
                     if(town!=null){
-                        DataBase.executeUpdate("update users_data set t.town='" +town+ "' where u.user=(select ut.user from users_trns ut where ut.mcuser='" + cs.getName() + "')");
+                        DataBase.executeUpdate("update users_data set t.town='" +town+ "' where u.mcuser='" + cs.getName() + "'");
                         invitation.remove(cs.getName());
                         success=true;
                     }else{
@@ -474,6 +474,8 @@ public class Town implements CommandExecutor, Runnable{
                 case "claim": 
                     break;
                 case "abandon": 
+                    break;
+                case "rent_plot": 
                     break;
             }
         }

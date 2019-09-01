@@ -30,7 +30,7 @@ public class Balance implements CommandExecutor ,TabCompleter{
     }
     @Override
     public boolean onCommand(CommandSender cs, Command cmnd, String label, String[] args) {
-        String SQL_QUERY = "select * from users_data where user=(select user from users_trns where mcuser='" + cs.getName() + "')";
+        String SQL_QUERY = "select * from users_data where mcuser='" + cs.getName() + "'";
         if (args.length==0){
             try (Connection conn = DriverManager.getConnection(connection[0]+connection[1]+connection[2], connection[3], connection[4]);
                 PreparedStatement preparedStatement = conn.prepareStatement(SQL_QUERY);

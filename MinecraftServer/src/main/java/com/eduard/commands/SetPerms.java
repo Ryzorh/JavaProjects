@@ -102,7 +102,7 @@ public class SetPerms implements CommandExecutor, TabCompleter{
             rList.add("Member");
             rList.add("Admin");
         }else if(args.length==2){
-            String SQL_QUERY = "select * from users_trns where mcuser <> '" + cs.getName() + "'";
+            String SQL_QUERY = "select * from users_data where mcuser <> '" + cs.getName() + "'";
             try (Connection conn = DriverManager.getConnection(connection[0] + connection[1] + connection[2], connection[3], connection[4]);
                     PreparedStatement preparedStatement = conn.prepareStatement(SQL_QUERY);) {
                 ResultSet result = preparedStatement.executeQuery();
