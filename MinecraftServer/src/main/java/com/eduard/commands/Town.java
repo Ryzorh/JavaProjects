@@ -40,17 +40,6 @@ public class Town implements CommandExecutor, Runnable{
         this.chunkProtectionCost=5.0;
         invitation=new HashMap<>();
     }
-    private boolean occupiedChunk(int x, int z) {
-        String SQL_QUERY = "select * from chunks_town where x=" + x + " and z=" + z;
-        try (Connection conn = DriverManager.getConnection(connection[0]+connection[1]+connection[2], connection[3], connection[4]);
-                PreparedStatement preparedStatement = conn.prepareStatement(SQL_QUERY);) {
-            ResultSet result = preparedStatement.executeQuery();
-            return result.next();
-        } catch (SQLException e) {
-            Logger.getLogger(ListenerTest.class.getName()).log(Level.SEVERE, null, e);
-        }
-        return false;
-    }
     private boolean pay(String user, BigDecimal wealth, BigDecimal expense){
         boolean payed=false;
         if (wealth.subtract(expense).compareTo(new BigDecimal(0)) != -1) {
@@ -387,6 +376,44 @@ public class Town implements CommandExecutor, Runnable{
         }
         return successfull;
     }
+    private boolean claimChunk(CommandSender cs, int x, int z, String townName) {
+        String SQL_QUERY = "insert into chunks_town values ("+ x + ", " + z+", "+townName+", 0)";
+        try (Connection conn = DriverManager.getConnection(connection[0]+connection[1]+connection[2], connection[3], connection[4]);
+                PreparedStatement preparedStatement = conn.prepareStatement(SQL_QUERY);) {
+            ResultSet result = preparedStatement.executeQuery();
+            return result.next();
+        } catch (SQLIntegrityConstraintViolationException ePK) {
+                cs.sendMessage("The chunk is not claimable.");
+        } catch (SQLException e) {
+            Logger.getLogger(ListenerTest.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return false;
+    }
+    private boolean claim(CommandSender cs){
+        boolean successfull=false;
+        String SQL_QUERY = "select * from users_data ud join towns t on (ud.town=t.town_name) where mcuser='"+cs.getName()+"' and t.mayor=ud.user";
+        try (Connection conn = DriverManager.getConnection(connection[0] + connection[1] + connection[2], connection[3], connection[4]);
+                PreparedStatement preparedStatement = conn.prepareStatement(SQL_QUERY);) {
+            ResultSet result = preparedStatement.executeQuery();
+            if(result.next()){
+                BigDecimal wealth = result.getBigDecimal("wealth");
+                if(wealth.subtract(new BigDecimal(100)).compareTo(new BigDecimal(0)) != -1){
+                    if(cs instanceof Player){
+                        Player player=(Player)cs;
+                        String townName=result.getString("ud.town");
+                        successfull=claimChunk(cs,player.getLocation().getChunk().getX(),player.getLocation().getChunk().getZ(), townName);
+                    }
+                }else{
+                    cs.sendMessage("You have not the money enough to claim the chunk.");
+                }
+            }else{
+                cs.sendMessage("You are not the mayor of any town.");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Town.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return successfull;
+}
     @Override
     public boolean onCommand(CommandSender cs, Command cmnd, String label, String[] args) {
         if (!cs.hasPermission("plugintest.town") && !cs.isOp()) {
@@ -472,6 +499,9 @@ public class Town implements CommandExecutor, Runnable{
                     }
                     break;
                 case "claim": 
+                    if(args.length==1){
+                        success=claim(cs);
+                    }
                     break;
                 case "abandon": 
                     break;
