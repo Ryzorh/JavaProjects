@@ -398,21 +398,21 @@ public class Town implements CommandExecutor, Runnable{
             switch(args[0]){
                 case "new":
                     if(args.length==2){
-                        if(args[1].matches("^[A-Za-z0-9]*$")){
+                        if(args[1].matches("^[A-Za-z0-9_]{3}[A-Za-z0-9_]*$") && args[0].length()<17){
                             success=newTown(cs, args[1]);
                         }
                     }
                     break;
                 case "info":
                     if(args.length==2){
-                        if(args[1].matches("^[A-Za-z0-9]*$")){
+                        if(args[1].matches("^[A-Za-z0-9_]{3}[A-Za-z0-9_]*$") && args[0].length()<17){
                             success=getTownInfo(cs, args[1]);
                         }
                     }
                     break;
                 case "join":
                     if(args.length==2){
-                        if(args[1].matches("^[A-Za-z0-9]*$")){
+                        if(args[1].matches("^[A-Za-z0-9_]{3}[A-Za-z0-9_]*$") && args[0].length()<17){
                             success=joinTown(cs, args[1]);
                         }
                     }
@@ -457,7 +457,7 @@ public class Town implements CommandExecutor, Runnable{
                     }                        
                     break;
                 case "invite": 
-                    if (args[1].matches("^[A-Za-z0-9]*$")) {
+                    if (args[1].matches("^[A-Za-z0-9_]{3}[A-Za-z0-9_]*$") && args[0].length()<17) {
                         success = invite(cs,args[1]);
                     }
                     break;

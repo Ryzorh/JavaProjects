@@ -37,7 +37,7 @@ public class Register implements CommandExecutor, TabCompleter{
     public boolean onCommand(CommandSender cs, Command cmnd, String label, String[] args) {
         boolean validArgs=false;
         if(args.length==1){
-            validArgs=args[0].matches("^[A-Za-z0-9]*$") && args[0].length()>2;
+            validArgs=args[0].matches("^[A-Za-z0-9_]{3}[A-Za-z0-9_]*$") && args[0].length()<17;
         }
         if(validArgs){
             DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");

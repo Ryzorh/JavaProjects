@@ -64,7 +64,7 @@ public class SetPerms implements CommandExecutor, TabCompleter{
             for (String group : groups) {
                 isInArray = isInArray || args[0].equals(group);
             }
-            validArgs = isInArray && args[1].matches("^[A-Za-z0-9]*$");
+            validArgs = isInArray && args[1].matches("^[A-Za-z0-9_]{3}[A-Za-z0-9_]*$")&& args[0].length()<17;
         }
         if (validArgs) {
             String SQL_QUERY = "select * from users_data where user='" + args[1] + "'";

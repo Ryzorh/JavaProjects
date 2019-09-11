@@ -32,7 +32,7 @@ public class LastSeen implements CommandExecutor, TabCompleter{
     public boolean onCommand(CommandSender cs, Command cmnd, String label, String[] args) {
         boolean validArgs=false;
         if(args.length==1){
-            validArgs=args[0].matches("^[A-Za-z0-9]*$");
+            validArgs = args[0].matches("^[A-Za-z0-9_]{3}[A-Za-z0-9_]*$") && args[0].length()<17;
         }
         if(validArgs){
             String SQL_QUERY = "select * from users_data where user='" + args[0] + "'";

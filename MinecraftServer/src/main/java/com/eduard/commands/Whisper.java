@@ -34,7 +34,7 @@ public class Whisper implements CommandExecutor, TabCompleter{
     public boolean onCommand(CommandSender cs, Command cmnd, String label, String[] args) {
         boolean validArgs = false;
         if (args.length >= 1) {
-            validArgs = args[0].matches("^[A-Za-z0-9]*$");
+            validArgs = args[0].matches("^[A-Za-z0-9_]{3}[A-Za-z0-9_]*$") && args[0].length()<17;
         }
         String message="";
         for (int i=1; i<args.length; i++){
